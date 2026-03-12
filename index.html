@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Mis Tareas</title>
+<title>Tareas de la Uni/Secu </title>
 <style>
 body{
 font-family:Arial;
@@ -102,7 +102,7 @@ background:#c0392b;
 </head>
 <body>
 
-<h1> Tareas Micaela Canzinos 📁</h1>
+<h1>Tareas Micaela Canzinos 📁</h1>
 
 <div class="form">
 <input id="titulo" placeholder="Nombre de la tarea">
@@ -125,7 +125,7 @@ background:#c0392b;
 <div id="lista"></div>
 
 <script>
-let tareas = [];
+let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
 
 const tituloInput = document.getElementById("titulo");
 const tipoInput = document.getElementById("tipo");
@@ -149,6 +149,7 @@ return;
 
 const tarea = {titulo,tipo,inicio,entrega};
 tareas.push(tarea);
+localStorage.setItem("tareas", JSON.stringify(tareas));
 
 render();
 
@@ -161,6 +162,7 @@ entregaInput.value = "";
 
 function eliminar(index){
 tareas.splice(index,1);
+localStorage.setItem("tareas", JSON.stringify(tareas));
 render();
 }
 
@@ -186,6 +188,10 @@ card.innerHTML = `
 lista.appendChild(card);
 }
 }
+
+// cargar tareas guardadas al abrir la página
+render();
+
 </script>
 
 </body>
