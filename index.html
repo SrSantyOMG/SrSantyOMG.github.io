@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mis Tareas</title>
+<style>
+body{
+font-family:Arial;
+margin:40px;
+background:#eef1f5;
+}
+
+h1{margin-bottom:20px}
+
+.form{
+background:white;
+padding:20px;
+border-radius:12px;
+margin-bottom:30px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+input,select,button{
+padding:8px;
+margin:5px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+cursor:pointer;
+background:#4a6cf7;
+color:white;
+border:none;
+}
+
+button:hover{
+background:#3a57d6;
+}
+
+#lista{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:20px;
+}
+
+.tarea{
+background:white;
+border-radius:10px;
+box-shadow:0 6px 12px rgba(0,0,0,0.1);
+padding:15px;
+position:relative;
+}
+
+.tarea::before{
+content:"";
+position:absolute;
+top:-10px;
+left:15px;
+width:80px;
+height:20px;
+background:#4a6cf7;
+border-radius:6px 6px 0 0;
+}
+
+.titulo{
+font-weight:bold;
+margin-bottom:10px;
+font-size:16px;
+}
+
+.tipo{
+font-size:12px;
+padding:4px 8px;
+border-radius:6px;
+display:inline-block;
+margin-bottom:8px;
+color:white;
+}
+
+.uni{background:#8e44ad}
+.sec{background:#16a085}
+
+.fechaBox{
+background:#f4f6ff;
+padding:8px;
+border-radius:6px;
+margin-bottom:6px;
+font-size:14px;
+}
+
+.eliminarBtn{
+margin-top:10px;
+background:#e74c3c;
+}
+
+.eliminarBtn:hover{
+background:#c0392b;
+}
+
+</style>
+</head>
+<body>
+
+<h1> Tareas Micaela Canzinos 📁</h1>
+
+<div class="form">
+<input id="titulo" placeholder="Nombre de la tarea">
+
+<select id="tipo">
+<option value="">Tipo de tarea</option>
+<option value="Universidad">Universidad</option>
+<option value="Secundaria">Secundaria</option>
+</select>
+
+<label>Inicio:</label>
+<input type="date" id="inicio">
+
+<label>Entrega:</label>
+<input type="date" id="entrega">
+
+<button id="agregarBtn">Agregar</button>
+</div>
+
+<div id="lista"></div>
+
+<script>
+let tareas = [];
+
+const tituloInput = document.getElementById("titulo");
+const tipoInput = document.getElementById("tipo");
+const inicioInput = document.getElementById("inicio");
+const entregaInput = document.getElementById("entrega");
+const lista = document.getElementById("lista");
+const boton = document.getElementById("agregarBtn");
+
+boton.addEventListener("click", agregarTarea);
+
+function agregarTarea(){
+const titulo = tituloInput.value.trim();
+const tipo = tipoInput.value;
+const inicio = inicioInput.value;
+const entrega = entregaInput.value;
+
+if(titulo === "" || tipo === "" || inicio === "" || entrega === ""){
+alert("Completá todos los campos");
+return;
+}
+
+const tarea = {titulo,tipo,inicio,entrega};
+tareas.push(tarea);
+
+render();
+
+// limpiar campos
+tituloInput.value = "";
+tipoInput.value = "";
+inicioInput.value = "";
+entregaInput.value = "";
+}
+
+function eliminar(index){
+tareas.splice(index,1);
+render();
+}
+
+function render(){
+lista.innerHTML = "";
+
+for(let i=0;i<tareas.length;i++){
+const t = tareas[i];
+
+const card = document.createElement("div");
+card.className = "tarea";
+
+let claseTipo = t.tipo === "Universidad" ? "uni" : "sec";
+
+card.innerHTML = `
+<div class="titulo">${t.titulo}</div>
+<div class="tipo ${claseTipo}">${t.tipo}</div>
+<div class="fechaBox">📅 Inicio: ${t.inicio}</div>
+<div class="fechaBox">⏰ Entrega: ${t.entrega}</div>
+<button class="eliminarBtn" onclick="eliminar(${i})">Eliminar</button>
+`;
+
+lista.appendChild(card);
+}
+}
+</script>
+
+</body>
+</html>
